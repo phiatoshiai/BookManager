@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Quản lí Sách</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="text text-success text-center">
+            <h3>Tìm kiếm sách theo tác giả</h3>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tác giả</th>
+                <th>Thành phố</th>
+                <th>Tên sách</th>
+                <th>Sửa</th>
+                <th>Xóa</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="author : ${author}">
+                <td  th:text="${author.id}"></td>
+                <td  th:text="${author.name}"></td>
+                <td  th:text="${author.city}"></td>
+                <td>
+                    <span  th:each="book: ${author.getBookList()}" th:text="${book.name} + '(' + ${book.public_year} + ')'+ ' - '" ></span>
+                </td>
+                <td>
+                    <a th:href="@{/editAuthor?id={id}(id=${author.id})}" class="btn btn-primary">
+                        <i class="fa fa-edit" aria-hidden="true"></i></a>
+                </td>
+                <td>
+                    <a th:href="@{/deleteAuthor?id={id}(id=${author.id})}" class="btn btn-danger"
+                       onclick="return confirm('Bạn muốn xóa sản phẩm này?')">
+                        <i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<span>
+            <a th:href="@{/home}">Trở về trang chủ</a>
+        </span>
+</body>
+</html>

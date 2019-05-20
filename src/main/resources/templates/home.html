@@ -1,0 +1,75 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản lí sách</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="alert alert-success">
+    <h1>QUẢN LÍ SÁCH</h1>
+    <div class="container-fluid">
+        <form action="/searchBookByAuthor" method="post">
+            <label for="search">
+                Tìm kiếm sách theo tác giả<i class="fa fa-search" aria-hidden="true"></i>
+            </label>
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Nhập tên tác giả" id="search" name="name" >
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-dark">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+
+        <div class="text text-success text-center">
+            <h3>DANH SÁCH</h3>
+            <h5>
+                <a href="/addBook" methods="get" ><i class="fa fa-book">Thêm sách mới</i></a>
+            </h5>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Sách</th>
+                <th>Năm Xuất Bản</th>
+                <th>Tác giả</th>
+                <th>Sửa</th>
+                <th>Xóa</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${bookList}">
+                <td  th:text="${book.id}"></td>
+                <td  th:text="${book.name}"></td>
+                <td  th:text="${book.public_year}"></td>
+                <td>
+                    <span  th:each="author: ${book.getAuthorList()}" th:text="${author.name} + ', '" ></span>
+                </td>
+                <td>
+                    <a th:href="@{/editBook?id={id}(id=${book.id})}" class="btn btn-primary">
+                        <i class="fa fa-edit" aria-hidden="true"></i></a>
+                </td>
+                <td>
+                    <a th:href="@{/deleteBook?id={id}(id=${book.id})}" class="btn btn-danger"
+                       onclick="return confirm('Bạn muốn xóa sản phẩm này?')">
+                        <i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+</body>
+</html>
