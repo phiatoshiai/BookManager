@@ -17,12 +17,16 @@
             <input type="hidden" th:field="*{id}">
             <div>
                 <label>Tên</label>
-                <input type="text" th:field="*{name}" class="form-control" placeholder="Tên"/>
+                <input type="text" th:field="*{name}" class="form-control" placeholder="Tên" required
+                       oninvalid="this.setCustomValidity('Vui lòng nhập tên tác giả')"
+                       oninput="this.setCustomValidity('')"/>
             </div>
             <div style="clear: both; display: block; height: 10px"></div>
             <div>
                 <label>Thành phố</label>
-                <input type="text" th:field="*{city}" class="form-control" placeholder="Năm xuất bản"/>
+                <input type="text" th:field="*{city}" class="form-control" placeholder="Thành phố" required
+                       oninvalid="this.setCustomValidity('Vui lòng nhập thành phố sinh sống')"
+                       oninput="this.setCustomValidity('')"/>
             </div>
             <div style="clear: both; display: block; height: 10px"></div>
             <input type="submit" class="btn btn-success" value="Save"/>
