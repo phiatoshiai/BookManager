@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "book")
+    @Table(name = "book")
 public class Book {
 
     @Id
@@ -22,6 +22,19 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
     private List<Author> authorList;
+
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "book_category_id")
+    private Category bookCategory;
+
+    public Category getBookCategory() {
+        return bookCategory;
+    }
+
+    public void setBookCategory(Category bookCategory) {
+        this.bookCategory = bookCategory;
+    }
 
     public Long getId() {
         return id;

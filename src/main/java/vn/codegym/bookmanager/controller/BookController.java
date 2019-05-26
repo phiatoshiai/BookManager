@@ -6,8 +6,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import vn.codegym.bookmanager.entity.Author;
 import vn.codegym.bookmanager.entity.Book;
+import vn.codegym.bookmanager.entity.Category;
 import vn.codegym.bookmanager.service.AuthorService;
 import vn.codegym.bookmanager.service.BookService;
+import vn.codegym.bookmanager.service.CategoryService;
 
 import java.util.List;
 
@@ -19,6 +21,28 @@ public class BookController {
 
     @Autowired
     AuthorService authorService;
+
+    @Autowired
+    CategoryService categoryService;
+
+    @RequestMapping("/index")
+    public String home(ModelMap map) {
+        List<Book> allBook = bookService.getAllBook();
+        map.addAttribute("bookList", allBook);
+
+        map.addAttribute("book", new Book());
+        List<Author> authors = authorService.findAllAuthor();
+
+        map.addAttribute("author", authors);
+
+        map.addAttribute("authorNew", new Author());
+
+        map.addAttribute("category", new Category());
+
+        map.addAttribute("categoryNew", new Category());
+
+        return "index";
+    }
 
     /*
     Trang chủ
@@ -54,9 +78,18 @@ public class BookController {
     Cập nhật thêm mới tác giả
      */
     @PostMapping("/saveAuthor")
-    public String saveAuthor(@ModelAttribute("author") Author author, ModelMap modelMap) {
+    public String saveAuthor(@ModelAttribute("authorNew") Author author, ModelMap modelMap) {
         authorService.saveAuthor(author);
-        return "redirect:/home";
+        return "redirect:/index";
+    }
+
+    /*
+    Cập nhật thêm mới thể loại
+ */
+    @PostMapping("/saveCategory")
+    public String saveCategory(@ModelAttribute("categoryNew") Category category, ModelMap modelMap) {
+        categoryService.saveCategory(category);
+        return "redirect:/index";
     }
 
     /*
@@ -68,6 +101,8 @@ public class BookController {
         modelMap.addAttribute("book", editBook);
         List<Author> authorEdit = authorService.findAllAuthor();
         modelMap.addAttribute("author", authorEdit);
+        List<Category> categoryEdit = categoryService.getAllCategory();
+        modelMap.addAttribute("category", categoryEdit);
         return "editBook";
     }
 

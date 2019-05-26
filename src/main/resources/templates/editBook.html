@@ -24,13 +24,32 @@
                 <label>Năm xuất bản</label>
                 <input type="text" th:field="*{public_year}" class="form-control" placeholder="Năm xuất bản"/>
             </div>
-
-            <div th:each="author : ${author}" >
-                <input type="checkbox" th:value="${author.id}" th:field="*{authorList}">
-                <label th:text="${author.name}"></label>
+            <div style="clear: both; display: block; height: 10px"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <th class="align-center">Thể loại sách</th>
+                        <div th:each="category : ${category}">
+                            <input type="checkbox" th:value="${category.id}" th:field="*{bookCategory}">
+                            <label th:text="${category.name}"></label>
+                        </div>
+                        <div>
+                            <a href="/addCategory" methods="get">Thêm thể loại sách</a>
+                        </div>
+                    </div>
+                <div class="col-md-6">
+                    <div>
+                        <th class="align-center">Tác giả</th>
+                        <div th:each="author : ${author}">
+                            <input type="checkbox" th:value="${author.id}" th:field="*{authorList}">
+                            <label th:text="${author.name}"></label>
+                        </div>
+                        <div>
+                            <a href="/addAuthor" methods="get" data-toggle="tooltip" data-placement="top" title="Thêm ngay tác giả!">Thêm tác giả</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <a href="/addAuthor" methods="get">Thêm tác giả</a>
             </div>
             <div style="clear: both; display: block; height: 10px"></div>
             <input type="submit" class="btn btn-success" value="Save"/>
@@ -38,5 +57,6 @@
         </form>
     </div>
 </div>
+<div class="jumbotron text-center" style="margin-bottom:0">@Phi-C0219H1-CodeGym</div>
 </body>
 </html>

@@ -17,23 +17,24 @@
             <input type="hidden" th:field="*{id}">
             <div>
                 <label>Tên</label>
-                <input type="text" th:field="*{name}" class="form-control" placeholder="Tên"/>
+                <input type="text" th:field="*{name}" class="form-control" placeholder="Tên" required
+                       oninvalid="this.setCustomValidity('Vui lòng nhập tên sách')"
+                       oninput="this.setCustomValidity('')"/>
             </div>
             <div style="clear: both; display: block; height: 10px"></div>
             <div>
                 <label>Năm xuất bản</label>
-                <input type="text" th:field="*{public_year}" class="form-control" placeholder="Năm xuất bản"/>
+                <input type="text" th:field="*{public_year}" class="form-control" placeholder="Năm xuất bản"
+                       required
+                       oninvalid="this.setCustomValidity('Vui lòng nhập năm xuất bản')"
+                       oninput="this.setCustomValidity('')"/>
             </div>
-
             <div th:each="author : ${author}" >
                 <input type="checkbox" th:value="${author.id}" th:field="*{authorList}">
                 <label th:text="${author.name}"></label>
             </div>
-            <div>
-                <a href="/addAuthor" methods="get">Thêm tác giả</a>
-            </div>
             <div style="clear: both; display: block; height: 10px"></div>
-            <input type="submit" class="btn btn-success" value="Save"/>
+            <input type="submit" class="btn btn-success" value="Thêm sách"/>
         </form>
     </div>
 </div>

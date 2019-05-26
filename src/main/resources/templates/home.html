@@ -44,6 +44,7 @@
                 <th>Tên Sách</th>
                 <th>Năm Xuất Bản</th>
                 <th>Tác giả</th>
+                <th>Thể loại</th>
                 <th>Sửa</th>
                 <th>Xóa</th>
             </tr>
@@ -56,6 +57,7 @@
                 <td>
                     <span  th:each="author: ${book.getAuthorList()}" th:text="${author.name} + ', '" ></span>
                 </td>
+                <td th:text="${book.getBookCategory().name}"></td>
                 <td>
                     <a th:href="@{/editBook?id={id}(id=${book.id})}" class="btn btn-primary">
                         <i class="fa fa-edit" aria-hidden="true"></i></a>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        td{
+            vertical-align: middle!important;
+        }
+    </style>
+</head>
+<body>
+<div class="alert alert-info">
+    <div class="container mt-3">
+        <h1><i class="fa fa-university"> Ngân hàng sách Việt Nam</i></h1>
+        <form action="/searchBookByAuthor" method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" class="form-control input-sm" placeholder="Tìm kiếm sách theo tác giả" id="search" name="name" >
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-dark button-sm">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container mt-3">
+    <br>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home"><i class="fa fa-home"> Danh sách</i></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu1"><i class="fa fa-book"> Thêm sách</i></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu2"><i class="fa fa-user"> Thêm tác giả</i></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu3"><i class="fa fa-user"> Thêm thể loại</i></a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="home" class="container tab-pane active"><br>
+            <div class="container">
+                <div class="row">
+                    <div class="text text-success text-center">
+                        <h3>DANH SÁCH</h3>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên Sách</th>
+                            <th>Năm Xuất Bản</th>
+                            <th>Tác giả</th>
+                            <th>Thể loại</th>
+                            <th>Sửa</th>
+                            <th>Xóa</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="book : ${bookList}">
+                            <td  th:text="${book.id}"></td>
+                            <td  th:text="${book.name}"></td>
+                            <td  th:text="${book.public_year}"></td>
+                            <td>
+                                <div  th:each="author: ${book.getAuthorList()}" th:text="${author.name}" ></div>
+                            </td>
+                            <td th:text="${book.getBookCategory().name}"></td>
+                            <td>
+                                <a th:href="@{/editBook(id=${book.id})}" class="btn btn-primary">
+                                    <i class="fa fa-edit" aria-hidden="true"></i></a>
+                            </td>
+                            <td>
+                                <a th:href="@{/deleteBook?id={id}(id=${book.id})}" class="btn btn-danger"
+                                   onclick="return confirm('Bạn muốn xóa sản phẩm này?')">
+                                    <i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div id="menu1" class="container tab-pane fade"><br>
+            <div class="container col-6">
+                <h1>Thêm sách mới</h1>
+                <div class="col-md-auto">
+                    <form th:object="${book}" action="/saveBook" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <div>
+                            <label>Tên</label>
+                            <input type="text" th:field="*{name}" class="form-control" placeholder="Tên"/>
+                        </div>
+                        <div style="clear: both; display: block; height: 10px"></div>
+                        <div>
+                            <label>Năm xuất bản</label>
+                            <input type="text" th:field="*{public_year}" class="form-control" placeholder="Năm xuất bản"/>
+                        </div>
+                        <div style="clear: both; display: block; height: 10px"></div>
+                        <p>Tác giả</p>
+                        <div th:each="author : ${author}" >
+                            <input type="checkbox" th:value="${author.id}" th:field="*{authorList}">
+                            <label th:text="${author.name}"></label>
+                        </div>
+                        <div style="clear: both; display: block; height: 10px"></div>
+                        <input type="submit" class="btn btn-success" value="Thêm sách"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="menu2" class="container tab-pane fade"><br>
+            <div class="container col-6">
+                <h1>Thêm tác giả</h1>
+                <div class="col-md-auto">
+                    <form th:object="${authorNew}" action="/saveAuthor" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <div>
+                            <label>Tên</label>
+                            <input type="text" th:field="*{name}" class="form-control" placeholder="Tên" required
+                                   oninvalid="this.setCustomValidity('Vui lòng nhập tên tác giả')"
+                                   oninput="this.setCustomValidity('')"/>
+                        </div>
+                        <div style="clear: both; display: block; height: 10px"></div>
+                        <div>
+                            <label>Thành phố</label>
+                            <input type="text" th:field="*{city}" class="form-control" placeholder="Thành phố" required
+                                   oninvalid="this.setCustomValidity('Vui lòng nhập thành phố sinh sống')"
+                                   oninput="this.setCustomValidity('')"/>
+                        </div>
+                        <div style="clear: both; display: block; height: 10px"></div>
+                        <input type="submit" class="btn btn-success" value="Thêm tác giả"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="menu3" class="container tab-pane fade"><br>
+            <div class="container col-6">
+                <h1>Thêm thể loại</h1>
+                <div class="col-md-auto">
+                    <form th:object="${categoryNew}" action="/saveCategory" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <div>
+                            <label>Tên</label>
+                            <input type="text" th:field="*{name}" class="form-control" placeholder="Tên" required
+                                   oninvalid="this.setCustomValidity('Vui lòng nhập tên thể loại sách')"
+                                   oninput="this.setCustomValidity('')"/>
+                        </div>
+                        <div style="clear: both; display: block; height: 10px"></div>
+                        <input type="submit" class="btn btn-success" value="Thêm thể loại sách"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
