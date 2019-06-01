@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.15, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: book_manager
+-- Host: 127.0.0.1    Database: bookmanager
 -- ------------------------------------------------------
 -- Server version	8.0.15
 
